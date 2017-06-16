@@ -16,7 +16,7 @@
 
         public decimal Close { get; set; }
 
-        public decimal Volume { get; set; }
+        public long Volume { get; set; }
 
         public DateTime Timestamp { get; set; }
     }

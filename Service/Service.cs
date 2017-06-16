@@ -1,50 +1,82 @@
 ﻿namespace AzureStocksAnalyzerDemo.Service
 {
     using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using AzureStocksAnalyzerDemo.Contracts;
+    using AzureStocksAnalyzerDemo.Contracts.Database;
     using AzureStocksAnalyzerDemo.Contracts.Service;
+    using CsvHelper;
+    using CsvHelper.Configuration;
 
     public class Service : IService
     {
-        public Service(IPrincipal principal)
+        public Service(IPrincipal principal, IRepository repository)
         {
             this.Principal = principal;
+            this.Repository = repository;
         }
 
         private IPrincipal Principal { get; }
+
+        private IRepository Repository { get; }
 
         private string UserId => this.Principal.Identity.Name;
 
         public Task<StockStatistics> Get95th(string stockName, PriceType priceType, PriceTypes priceTypes)
         {
-            throw new NotImplementedException();
+            return this.Repository.Get95th(this.UserId, stockName, priceType, priceTypes);
         }
 
         public Task<string[]> GetAllStockNames()
         {
-            throw new NotImplementedException();
+            return this.Repository.GetAllStockNames(this.UserId);
         }
 
         public Task<StockStatistics> GetMax(string stockName, PriceType priceType, PriceTypes priceTypes)
         {
-            throw new NotImplementedException($"{this.Principal.Identity.Name} requested max for {stockName}: priceType is {priceType}, priceTypes are {priceTypes}");
+            return this.Repository.GetMax(this.UserId, stockName, priceType, priceTypes);
         }
 
         public Task<StockStatistics> GetMedian(string stockName, PriceType priceType, PriceTypes priceTypes)
         {
-            throw new NotImplementedException();
+            return this.Repository.GetMedian(this.UserId, stockName, priceType, priceTypes);
         }
 
         public Task<StockStatistics> GetMin(string stockName, PriceType priceType, PriceTypes priceTypes)
         {
-            throw new NotImplementedException();
+            return this.Repository.GetMin(this.UserId, stockName, priceType, priceTypes);
         }
 
         public Task UploadData(string stockName, string csvContent)
         {
-            throw new NotImplementedException();
+            return this.Repository.UploadData(ParseUploadedData(stockName, csvContent).ToList());
+        }
+
+        private IEnumerable<StockEntry> ParseUploadedData(string stockName, string csvContent)
+        {
+            using (var textReader = new StringReader(csvContent))
+            {
+                var csvReader = new CsvReader(textReader, new CsvConfiguration { HasHeaderRecord = true });
+                while (csvReader.Read())
+                {
+                    yield return new StockEntry
+                    {
+                        UserId = this.UserId,
+                        StockName = stockName,
+                        Timestamp = DateTime.ParseExact(csvReader["Date"], "d-MMM-yy", CultureInfo.InvariantCulture),
+                        Open = decimal.Parse(csvReader["Open"], CultureInfo.InvariantCulture),
+                        High = decimal.Parse(csvReader["High"], CultureInfo.InvariantCulture),
+                        Low = decimal.Parse(csvReader["Low"], CultureInfo.InvariantCulture),
+                        Close = decimal.Parse(csvReader["Close"], CultureInfo.InvariantCulture),
+                        Volume = long.Parse(csvReader["Volume"], CultureInfo.InvariantCulture),
+                    };
+                }
+            }
         }
     }
 }
