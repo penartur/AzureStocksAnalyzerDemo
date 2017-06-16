@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26606.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionApp", "FunctionApp\FunctionApp.csproj", "{B906B20F-F030-44BD-80B4-DDCF02718C2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionApp", "FunctionApp\AzureStocksAnalyzerDemo.FunctionApp.csproj", "{B906B20F-F030-44BD-80B4-DDCF02718C2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\AzureStocksAnalyzerDemo.Contracts.csproj", "{4E458360-9384-4B5B-A1B7-C59C8A687329}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\AzureStocksAnalyzerDemo.Service.csproj", "{177CFA02-EB8E-49FF-8442-367285BEB6DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{B906B20F-F030-44BD-80B4-DDCF02718C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B906B20F-F030-44BD-80B4-DDCF02718C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B906B20F-F030-44BD-80B4-DDCF02718C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E458360-9384-4B5B-A1B7-C59C8A687329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E458360-9384-4B5B-A1B7-C59C8A687329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E458360-9384-4B5B-A1B7-C59C8A687329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E458360-9384-4B5B-A1B7-C59C8A687329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{177CFA02-EB8E-49FF-8442-367285BEB6DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{177CFA02-EB8E-49FF-8442-367285BEB6DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{177CFA02-EB8E-49FF-8442-367285BEB6DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{177CFA02-EB8E-49FF-8442-367285BEB6DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
