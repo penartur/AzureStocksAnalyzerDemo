@@ -9,12 +9,14 @@
 
         Task<string[]> GetAllStockNames(string userId);
 
-        Task<StockStatistics> GetMin(string userId, string stockName, PriceType priceType, PriceTypes priceTypes);
+        Task<StockStatistics> GetMin(string userId, string stockName, PriceTypes priceTypes);
 
-        Task<StockStatistics> GetMax(string userId, string stockName, PriceType priceType, PriceTypes priceTypes);
+        Task<StockStatistics> GetAverage(string userId, string stockName, PriceTypes priceTypes);
 
-        Task<StockStatistics> GetMedian(string userId, string stockName, PriceType priceType, PriceTypes priceTypes);
+        Task<StockStatistics> GetMax(string userId, string stockName, PriceTypes priceTypes);
 
-        Task<StockStatistics> Get95th(string userId, string stockName, PriceType priceType, PriceTypes priceTypes);
+        Task<StockStatistics> GetMedian(string userId, string stockName, PriceTypes priceTypes);
+
+        Task<StockStatistics> Get95Percentile(string userId, string stockName, PriceTypes priceTypes);
     }
 }

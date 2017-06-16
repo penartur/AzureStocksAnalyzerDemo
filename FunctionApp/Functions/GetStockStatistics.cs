@@ -16,10 +16,9 @@ namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
         [FunctionName("GetStockStatistics")]
 
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "GetStockStatistics/{stockName}/{priceTypeString}/{requestTypeString}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "GetStockStatistics/{stockName}/{requestTypeString}")]
             HttpRequestMessage req,
             string stockName,
-            string priceTypeString,
             string requestTypeString,
             TraceWriter log)
         {
@@ -28,7 +27,6 @@ namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
             var priceTypesString = req.GetQueryNameValuePairs().FirstOrDefault(q => string.Equals(q.Key, "priceTypes", StringComparison.OrdinalIgnoreCase)).Value;
 
             Enum.TryParse(requestTypeString, out RequestType requestType);
-            Enum.TryParse(priceTypeString, out PriceType priceType);
             var priceTypes = PriceTypes.All;
             if (!string.IsNullOrEmpty(priceTypesString))
             {
@@ -36,7 +34,7 @@ namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
             }
 
             var service = ServiceLocator.GetService();
-            var statistics = await GetStatistics(service, stockName, requestType, priceType, priceTypes);
+            var statistics = await GetStatistics(service, stockName, requestType, priceTypes);
 
             if (statistics == null)
             {
@@ -46,26 +44,29 @@ namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
             return req.CreateResponse(HttpStatusCode.OK, statistics);
         }
 
-        private static async Task<StockStatistics> GetStatistics(IService service, string stockName, RequestType requestType, PriceType priceType, PriceTypes priceTypes)
+        private static Task<StockStatistics> GetStatistics(IService service, string stockName, RequestType requestType, PriceTypes priceTypes)
         {
             switch (requestType)
             {
-                case RequestType.Max:
-                    return await service.GetMax(stockName, priceType, priceTypes);
                 case RequestType.Min:
-                    return await service.GetMin(stockName, priceType, priceTypes);
+                    return service.GetMin(stockName, priceTypes);
+                case RequestType.Average:
+                    return service.GetAverage(stockName, priceTypes);
+                case RequestType.Max:
+                    return service.GetMax(stockName, priceTypes);
                 case RequestType.Median:
-                    return await service.GetMedian(stockName, priceType, priceTypes);
+                    return service.GetMedian(stockName, priceTypes);
                 case RequestType.Percentile95:
-                    return await service.Get95th(stockName, priceType, priceTypes);
+                    return service.Get95Percentile(stockName, priceTypes);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(requestType), requestType, "Value should be one of Max, Min, Median, Percentile95");
+                    throw new ArgumentOutOfRangeException(nameof(requestType), requestType, "Value should be one of Min, Average, Max, Median, Percentile95");
             }
         }
 
         public enum RequestType
         {
             Min,
+            Average,
             Max,
             Median,
             Percentile95,

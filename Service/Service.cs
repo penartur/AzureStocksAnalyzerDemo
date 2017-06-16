@@ -27,9 +27,9 @@
 
         private string UserId => this.Principal.Identity.Name;
 
-        public Task<StockStatistics> Get95th(string stockName, PriceType priceType, PriceTypes priceTypes)
+        public Task<StockStatistics> Get95Percentile(string stockName, PriceTypes priceTypes)
         {
-            return this.Repository.Get95th(this.UserId, stockName, priceType, priceTypes);
+            return this.Repository.Get95Percentile(this.UserId, stockName, priceTypes);
         }
 
         public Task<string[]> GetAllStockNames()
@@ -37,19 +37,24 @@
             return this.Repository.GetAllStockNames(this.UserId);
         }
 
-        public Task<StockStatistics> GetMax(string stockName, PriceType priceType, PriceTypes priceTypes)
+        public Task<StockStatistics> GetMax(string stockName, PriceTypes priceTypes)
         {
-            return this.Repository.GetMax(this.UserId, stockName, priceType, priceTypes);
+            return this.Repository.GetMax(this.UserId, stockName, priceTypes);
         }
 
-        public Task<StockStatistics> GetMedian(string stockName, PriceType priceType, PriceTypes priceTypes)
+        public Task<StockStatistics> GetAverage(string stockName, PriceTypes priceTypes)
         {
-            return this.Repository.GetMedian(this.UserId, stockName, priceType, priceTypes);
+            return this.Repository.GetMax(this.UserId, stockName, priceTypes);
         }
 
-        public Task<StockStatistics> GetMin(string stockName, PriceType priceType, PriceTypes priceTypes)
+        public Task<StockStatistics> GetMedian(string stockName, PriceTypes priceTypes)
         {
-            return this.Repository.GetMin(this.UserId, stockName, priceType, priceTypes);
+            return this.Repository.GetMedian(this.UserId, stockName, priceTypes);
+        }
+
+        public Task<StockStatistics> GetMin(string stockName, PriceTypes priceTypes)
+        {
+            return this.Repository.GetMin(this.UserId, stockName, priceTypes);
         }
 
         public Task UploadData(string stockName, string csvContent)
@@ -59,6 +64,11 @@
 
         private IEnumerable<StockEntry> ParseUploadedData(string stockName, string csvContent)
         {
+            if (!stockName.All(char.IsLetterOrDigit))
+            {
+                throw new ArgumentException("Only letters and digits are allowed in stock name", nameof(stockName));
+            }
+
             using (var textReader = new StringReader(csvContent))
             {
                 var csvReader = new CsvReader(textReader, new CsvConfiguration { HasHeaderRecord = true });
@@ -68,7 +78,7 @@
                     {
                         UserId = this.UserId,
                         StockName = stockName,
-                        Timestamp = DateTime.ParseExact(csvReader["Date"], "d-MMM-yy", CultureInfo.InvariantCulture),
+                        Timestamp = DateTime.ParseExact(csvReader["Date"], "d-MMM-yy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal),
                         Open = decimal.Parse(csvReader["Open"], CultureInfo.InvariantCulture),
                         High = decimal.Parse(csvReader["High"], CultureInfo.InvariantCulture),
                         Low = decimal.Parse(csvReader["Low"], CultureInfo.InvariantCulture),
