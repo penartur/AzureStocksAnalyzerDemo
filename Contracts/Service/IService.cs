@@ -5,7 +5,7 @@
     public interface IService
     {
         // CSV files exported by google finance are relatively small (containing at most 365 rows), so it makes sense to work with strings instead of streams
-        Task UploadData(string stockName, string csvContent);
+        Task UploadData(string stockName, byte[] csvContent);
 
         Task<string[]> GetAllStockNames();
 

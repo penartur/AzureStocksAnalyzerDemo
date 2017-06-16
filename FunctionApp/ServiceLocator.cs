@@ -22,7 +22,8 @@ namespace AzureStocksAnalyzerDemo.FunctionApp
         {
             public ServiceLocatorImplementation()
             {
-                this.Repository = new Repository(ConfigurationManager.AppSettings["StorageConnectionString"]);
+                var connectionString = ConfigurationManager.ConnectionStrings["StorageConnectionString"].ToString();
+                this.Repository = new Repository(connectionString);
             }
 
             private IRepository Repository { get; }

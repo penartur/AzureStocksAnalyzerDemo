@@ -106,7 +106,7 @@
 
         private static string GetPartitionKey(string userId, string stockName)
         {
-            return userId + "/" + stockName;
+            return userId + ":" + stockName;
         }
 
         private static string GetRowKey(DateTime dateTime)

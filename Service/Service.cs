@@ -57,34 +57,37 @@
             return this.Repository.GetMin(this.UserId, stockName, priceTypes);
         }
 
-        public Task UploadData(string stockName, string csvContent)
+        public Task UploadData(string stockName, byte[] csvContent)
         {
             return this.Repository.UploadData(ParseUploadedData(stockName, csvContent).ToList());
         }
 
-        private IEnumerable<StockEntry> ParseUploadedData(string stockName, string csvContent)
+        private IEnumerable<StockEntry> ParseUploadedData(string stockName, byte[] csvContent)
         {
             if (!stockName.All(char.IsLetterOrDigit))
             {
                 throw new ArgumentException("Only letters and digits are allowed in stock name", nameof(stockName));
             }
 
-            using (var textReader = new StringReader(csvContent))
+            using (var stream = new MemoryStream(csvContent))
             {
-                var csvReader = new CsvReader(textReader, new CsvConfiguration { HasHeaderRecord = true });
-                while (csvReader.Read())
+                using (var textReader = new StreamReader(stream))
                 {
-                    yield return new StockEntry
+                    var csvReader = new CsvReader(textReader, new CsvConfiguration { HasHeaderRecord = true });
+                    while (csvReader.Read())
                     {
-                        UserId = this.UserId,
-                        StockName = stockName,
-                        Timestamp = DateTime.ParseExact(csvReader["Date"], "d-MMM-yy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal),
-                        Open = decimal.Parse(csvReader["Open"], CultureInfo.InvariantCulture),
-                        High = decimal.Parse(csvReader["High"], CultureInfo.InvariantCulture),
-                        Low = decimal.Parse(csvReader["Low"], CultureInfo.InvariantCulture),
-                        Close = decimal.Parse(csvReader["Close"], CultureInfo.InvariantCulture),
-                        Volume = long.Parse(csvReader["Volume"], CultureInfo.InvariantCulture),
-                    };
+                        yield return new StockEntry
+                        {
+                            UserId = this.UserId,
+                            StockName = stockName,
+                            Timestamp = DateTime.ParseExact(csvReader["Date"], "d-MMM-yy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal),
+                            Open = decimal.Parse(csvReader["Open"], CultureInfo.InvariantCulture),
+                            High = decimal.Parse(csvReader["High"], CultureInfo.InvariantCulture),
+                            Low = decimal.Parse(csvReader["Low"], CultureInfo.InvariantCulture),
+                            Close = decimal.Parse(csvReader["Close"], CultureInfo.InvariantCulture),
+                            Volume = long.Parse(csvReader["Volume"], CultureInfo.InvariantCulture),
+                        };
+                    }
                 }
             }
         }

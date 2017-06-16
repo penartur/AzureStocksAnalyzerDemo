@@ -16,7 +16,7 @@ namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
         [FunctionName("GetStockStatistics")]
 
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "GetStockStatistics/{stockName}/{requestTypeString}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetStockStatistics/{stockName}/{requestTypeString}")]
             HttpRequestMessage req,
             string stockName,
             string requestTypeString,
