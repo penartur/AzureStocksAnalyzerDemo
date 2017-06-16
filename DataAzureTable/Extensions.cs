@@ -39,6 +39,11 @@
                 {
                     result.Add(entity);
                 }
+
+                if (continuationToken == null)
+                {
+                    return result;
+                }
             }
         }
     }

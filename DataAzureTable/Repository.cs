@@ -69,11 +69,11 @@
                     PartitionKey = GetPartitionKey(entry.UserId, entry.StockName),
                     RowKey = GetRowKey(entry.Timestamp),
                     Timestamp = entry.Timestamp,
-                    Open = entry.Open,
-                    High = entry.High,
-                    Low = entry.Low,
-                    Close = entry.Close,
-                    Volume = entry.Volume,
+                    Open = entry.Open.ToString(CultureInfo.InvariantCulture),
+                    High = entry.High.ToString(CultureInfo.InvariantCulture),
+                    Low = entry.Low.ToString(CultureInfo.InvariantCulture),
+                    Close = entry.Close.ToString(CultureInfo.InvariantCulture),
+                    Volume = entry.Volume.ToString(CultureInfo.InvariantCulture),
                 })
                 .Select(entity => TableOperation.InsertOrReplace(entity));
 
@@ -127,15 +127,25 @@
                 return null;
             }
 
+            Func<PriceTypes, Func<StockDataEntity, string>, decimal?> priceTypeProcessor = (priceType, selector) =>
+            {
+                if (!priceTypes.HasFlag(priceType))
+                {
+                    return null;
+                }
+
+                return aggregator(stocksData.Select(entity => decimal.Parse(selector(entity), CultureInfo.InvariantCulture)));
+            };
+
             return new StockStatistics
             {
                 DataPointsCount = stocksData.Count,
                 Timestamp = stocksData.Max(entity => GetDateTime(entity.RowKey)),
-                Open = priceTypes.HasFlag(PriceTypes.Open) ? aggregator(stocksData.Select(entity => entity.Open)) : default(decimal?),
-                High = priceTypes.HasFlag(PriceTypes.High) ? aggregator(stocksData.Select(entity => entity.High)) : default(decimal?),
-                Low = priceTypes.HasFlag(PriceTypes.Low) ? aggregator(stocksData.Select(entity => entity.Low)) : default(decimal?),
-                Close = priceTypes.HasFlag(PriceTypes.Close) ? aggregator(stocksData.Select(entity => entity.Close)) : default(decimal?),
-                Volume = priceTypes.HasFlag(PriceTypes.Volume) ? aggregator(stocksData.Select(entity => (decimal)entity.Volume)) : default(decimal?),
+                Open = priceTypeProcessor(PriceTypes.Open, entity => entity.Open),
+                High = priceTypeProcessor(PriceTypes.High, entity => entity.High),
+                Low = priceTypeProcessor(PriceTypes.Low, entity => entity.Low),
+                Close = priceTypeProcessor(PriceTypes.Close, entity => entity.Close),
+                Volume = priceTypeProcessor(PriceTypes.Volume, entity => entity.Volume),
             };
         }
 
