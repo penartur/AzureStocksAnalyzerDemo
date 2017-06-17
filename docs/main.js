@@ -4,6 +4,7 @@ $(() => {
     const knownElements = {
         getApiBaseUrl: () => $("#apiBaseUrl"),
         getLoginButton: () => $("#loginButton"),
+        getLogoutButton: () => $("#logoutButton"),
         getCsvFile: () => $("#csvFile"),
         getCsvStockName: () => $("#csvStockName"),
         getUploadButton: () => $("#uploadButton"),
