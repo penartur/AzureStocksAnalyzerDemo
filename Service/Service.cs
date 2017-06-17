@@ -19,6 +19,11 @@
         {
             this.Principal = principal;
             this.Repository = repository;
+
+            if (string.IsNullOrEmpty(this.UserId))
+            {
+                throw new ArgumentException("UserId should not be empty", nameof(principal));
+            }
         }
 
         private IPrincipal Principal { get; }
@@ -44,7 +49,7 @@
 
         public Task<StockStatistics> GetAverage(string stockName, PriceTypes priceTypes)
         {
-            return this.Repository.GetMax(this.UserId, stockName, priceTypes);
+            return this.Repository.GetAverage(this.UserId, stockName, priceTypes);
         }
 
         public Task<StockStatistics> GetMedian(string stockName, PriceTypes priceTypes)

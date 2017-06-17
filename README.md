@@ -15,8 +15,9 @@ For deployment to Azure:
 ## API methods
 
 * https://example.org/api/UploadStockData/GOOG - POST content of CSV file (as exported by Google Finance).
+The request body should only contain file contents (with content-length equal to the file size).
 * https://example.org/api/GetAllStocks - GET list of stock names.
 * https://example.org/api/GetStockStatistics/GOOG/Max - GET information on maximum OHLC prices / volumes for GOOG stock for its entire logged history.
 Besides `Max`, you may also supply `Min`, `Average`, `Median` or `Percentile95`.
-Additionally, you may pass `?RequestType=Open,Close`, so that only `Open` and `Close` maximum values will be returned.
+Additionally, you may pass `?priceTypes=Open,Close`, so that only `Open` and `Close` maximum values will be returned.
 Supported values: `Open`, `High`, `Low`, `Close`, `Volume`, `All`.
