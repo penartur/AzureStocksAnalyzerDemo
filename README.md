@@ -21,3 +21,7 @@ The request body should only contain file contents (with content-length equal to
 Besides `Max`, you may also supply `Min`, `Average`, `Median` or `Percentile95`.
 Additionally, you may pass `?priceTypes=Open,Close`, so that only `Open` and `Close` maximum values will be returned.
 Supported values: `Open`, `High`, `Low`, `Close`, `Volume`, `All`.
+
+## Example
+
+https://penartur.github.io/AzureStocksAnalyzerDemo

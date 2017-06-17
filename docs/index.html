@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <section>
+            <h2>Settings</h2>
+            <p>API base address: <input type="text" id="apiBaseUrl" /></p>
+            <p><input type="button" id="loginButton" value="Login" /></p>
+        </section>
+        <section>
+            <h2>Upload CSV</h2>
+            <p>File: <input type="file" id="csvFile"/></p>
+            <p>Stock name: <input type="text" id="csvStockName"/></p>
+            <p><input type="button" id="uploadButton" value="Upload"/></p>
+        </section>
+        <section>
+            <h2>Statistics</h2>
+            <p>Select stock: <select id="stockSelect"></select> <input type="button" id="stockSelectUpdate" value="Update list of stocks"/></p>
+            <p>
+                Select statistics type:
+                <select id="statisticsTypeSelect">
+                    <option value="Min">Min</option>
+                    <option value="Average">Average</option>
+                    <option value="Max">Max</option>
+                    <option value="Median">Median</option>
+                    <option value="Percentile95">Percentile95</option>
+                </select>
+            </p>
+            <p>
+                Select columns to get:
+                <input type="checkbox" name="columnsFilter" value="All" checked="checked" /> All,
+                <input type="checkbox" name="columnsFilter" value="Open" /> Open,
+                <input type="checkbox" name="columnsFilter" value="High" /> High,
+                <input type="checkbox" name="columnsFilter" value="Low" /> Low,
+                <input type="checkbox" name="columnsFilter" value="Close" /> Close,
+                <input type="checkbox" name="columnsFilter" value="Volume" /> Volume,
+            </p>
+            <p><input type="button" id="statisticsButton" value="Get statistics"/></p>
+            <p><pre id="resultPlaceholder"></pre></p>
+        </section>
+    </body>
+</html>
