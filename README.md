@@ -7,8 +7,8 @@ You will need Visual Studio 15.3 or newer, with [Azure Function Tools](https://m
 For deployment to Azure:
 
 * Create Function App in Azure Portal;
-* Configure it to use App Service Authentication with Azure Active Directory configured; disallow anonymous requests (Platform Features, Authentication / Authorization)
-* (Optionally, to use API from browser) Enable CORS (Platform Features, CORS)
+* Configure it to use App Service Authentication with Azure Active Directory configured; disallow anonymous requests (Platform Features, Authentication / Authorization);
+* (Optionally, to use API from browser) Enable CORS (Platform Features, CORS), and delete all allowed origins (see https://github.com/Azure/azure-webjobs-sdk-script/issues/620 for details);
 * Add ConnectionString `StorageConnectionString` pointing to the Azure Storage Account with read/write access to `StocksData` and `UserStocks` tables (Settings, Manage Application Settings);
 * Deploy from VS (right click on FunctionApp project, "Deploy").
 

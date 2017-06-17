@@ -30,7 +30,7 @@ namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
             var service = ServiceLocator.GetService();
             await service.UploadData(stockName, csvContent);
 
-            return req.CreateResponse(HttpStatusCode.OK, $"CSV with length={csvContent.Length} successfully processed");
+            return Utils.CreateResponse(req, HttpStatusCode.OK, $"CSV with length={csvContent.Length} successfully processed");
         }
     }
 }

@@ -17,7 +17,7 @@ namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
             var service = ServiceLocator.GetService();
             var result = await service.GetAllStockNames();
 
-            return req.CreateResponse(HttpStatusCode.OK, result);
+            return Utils.CreateResponse(req, HttpStatusCode.OK, result);
         }
     }
 }

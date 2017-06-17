@@ -38,10 +38,10 @@ namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
 
             if (statistics == null)
             {
-                return req.CreateErrorResponse(HttpStatusCode.NotFound, "Stock not found");
+                return Utils.CreateErrorResponse(req, HttpStatusCode.NotFound, "Stock not found");
             }
 
-            return req.CreateResponse(HttpStatusCode.OK, statistics);
+            return Utils.CreateResponse(req, HttpStatusCode.OK, statistics);
         }
 
         private static Task<StockStatistics> GetStatistics(IService service, string stockName, RequestType requestType, PriceTypes priceTypes)
