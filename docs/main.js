@@ -20,6 +20,7 @@ $(() => {
     const getFile = () => knownElements.getCsvFile().prop("files")[0];
 
     const login = () => document.location = `${getApiUrl()}/.auth/login/aad?post_login_redirect_url=${encodeURIComponent(document.location)}`;
+    const logout = () => document.location = `${getApiUrl()}/.auth/logout/aad?post_logout_redirect_url=${encodeURIComponent(document.location)}`;
 
     const onAjaxError = (jqXhr, textStatus, errorThrown) => alert(`An error occured: ${textStatus}, ${errorThrown}`);
 
@@ -83,6 +84,7 @@ $(() => {
     if (getApiUrl()) updateStocksList();
 
     knownElements.getLoginButton().click(login);
+    knownElements.getLogoutButton().click(logout);
     knownElements.getCsvFile().change(onFileSelected);
     knownElements.getUploadButton().click(uploadFile);
     knownElements.getStockSelectUpdate().click(updateStocksList);
