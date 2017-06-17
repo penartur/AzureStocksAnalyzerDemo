@@ -25,3 +25,9 @@ Supported values: `Open`, `High`, `Low`, `Close`, `Volume`, `All`.
 ## Example
 
 https://penartur.github.io/AzureStocksAnalyzerDemo
+
+Note that there seem to be some cross-origin related problems in Chrome, so the demo might not work there.
+Additionally, for some reason Azure returns 403 error for POST requests with well-known browser user-agents (e.g. Firefox, Edge).
+The demo is tested and is fully functional in Firefox with user-agent set to any other string (go to `about:config`, create new string preference with name `general.useragent.override` and value `test`).
+
+To use: enter the base app url (e.g. `https://yourfunctionapp.azurewebsites.net`), log in, play!
