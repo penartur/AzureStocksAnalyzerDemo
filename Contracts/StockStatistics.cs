@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AzureStocksAnalyzerDemo.Contracts
+﻿namespace AzureStocksAnalyzerDemo.Contracts
 {
+    using System;
+
     public class StockStatistics
     {
         public decimal? Open { get; set; }

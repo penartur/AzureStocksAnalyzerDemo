@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using AzureStocksAnalyzerDemo.Contracts.Database;
-using AzureStocksAnalyzerDemo.Contracts.Service;
-using AzureStocksAnalyzerDemo.DataAzureTable;
-
-namespace AzureStocksAnalyzerDemo.FunctionApp
+﻿namespace AzureStocksAnalyzerDemo.FunctionApp
 {
+    using System.Configuration;
+    using System.Security.Claims;
+    using AzureStocksAnalyzerDemo.Contracts.Database;
+    using AzureStocksAnalyzerDemo.Contracts.Service;
+    using AzureStocksAnalyzerDemo.DataAzureTable;
+
     internal class ServiceLocator
     {
         private static ServiceLocatorImplementation Instance { get; } = new ServiceLocatorImplementation();

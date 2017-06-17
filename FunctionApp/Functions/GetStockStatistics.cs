@@ -1,16 +1,16 @@
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using AzureStocksAnalyzerDemo.Contracts;
-using AzureStocksAnalyzerDemo.Contracts.Service;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-
 namespace AzureStocksAnalyzerDemo.FunctionApp.Functions
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using AzureStocksAnalyzerDemo.Contracts;
+    using AzureStocksAnalyzerDemo.Contracts.Service;
+    using Microsoft.Azure.WebJobs;
+    using Microsoft.Azure.WebJobs.Extensions.Http;
+    using Microsoft.Azure.WebJobs.Host;
+
     public static class GetStockStatistics
     {
         [FunctionName("GetStockStatistics")]
