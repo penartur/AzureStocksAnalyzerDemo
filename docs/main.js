@@ -81,7 +81,7 @@ $(() => {
     const hash = rawHash.startsWith("#") ? rawHash.substr(1) : rawHash;
     knownElements.getApiBaseUrl().val(hash);
 
-    if (getApiUrl()) updateStocksList();
+    //if (getApiUrl()) updateStocksList();
 
     knownElements.getLoginButton().click(login);
     knownElements.getLogoutButton().click(logout);
