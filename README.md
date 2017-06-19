@@ -40,9 +40,10 @@ Supported values: `Open`, `High`, `Low`, `Close`, `Volume`, `All`.
 
 https://penartur.github.io/AzureStocksAnalyzerDemo
 
-Note that there seem to be some cross-origin related problems in Chrome, so the demo might not work there.
-Additionally, for some reason Azure returns 403 error for POST requests with well-known browser user-agents (e.g. Firefox, Edge).
-The demo is tested and is fully functional in Firefox with user-agent set to any other string (go to `about:config`, create new string preference with name `general.useragent.override` and value `test`).
+Note that, for some reason Azure returns 403 error for POST requests with well-known browser user-agents (e.g. Firefox, Edge): https://github.com/Azure/azure-webjobs-sdk-script/issues/1602.
+The demo is tested and is fully functional in Chrome and Firefox with user-agent set to any other string (go to `about:config`, create new string preference with name `general.useragent.override` and value `test`).
+It's still mostly functional with unmodified user-agent string; however, uploading stock data will not work, as it involves sending a POST request.
+If you're using [Privacy Badger](https://www.eff.org/privacybadger), you'll need to open a new session with Privacy Badger completely disabled; simply disabling it for the demo website is not enough, as it still blocks session cookies from being sent to API.
 
 To use: enter the base app url (e.g. `https://yourfunctionapp.azurewebsites.net`), log in, play!
 
