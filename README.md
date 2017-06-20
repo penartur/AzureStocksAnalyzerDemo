@@ -22,7 +22,7 @@ For deployment to Azure:
 
 * Create Function App in Azure Portal;
 * Configure it to use App Service Authentication with Azure Active Directory configured; disallow anonymous requests (Platform Features, Authentication / Authorization);
-* (Optionally, to use API from browser) Enable CORS (Platform Features, CORS), and delete all allowed origins (see https://github.com/Azure/azure-webjobs-sdk-script/issues/620 for details);
+* (Optionally, to use API from browser) In Authentication settings, add full frontend url (e.g. https://penartur.github.io/AzureStocksAnalyzerDemo/) to the Allowed External Redirect Urls (see https://github.com/Azure/azure-webjobs-sdk-script/issues/1602 for details); enable CORS (Platform Features, CORS), delete all allowed origins (see https://github.com/Azure/azure-webjobs-sdk-script/issues/620 for details);
 * Add ConnectionString `StorageConnectionString` pointing to the Azure Storage Account with read/write access to `StocksData` and `UserStocks` tables (Settings, Manage Application Settings);
 * Deploy from VS (right click on FunctionApp project, "Deploy").
 
@@ -40,10 +40,8 @@ Supported values: `Open`, `High`, `Low`, `Close`, `Volume`, `All`.
 
 https://penartur.github.io/AzureStocksAnalyzerDemo
 
-Note that, for some reason Azure returns 403 error for POST requests with well-known browser user-agents (e.g. Firefox, Edge): https://github.com/Azure/azure-webjobs-sdk-script/issues/1602.
-The demo is tested and is fully functional in Chrome and Firefox with user-agent set to any other string (go to `about:config`, create new string preference with name `general.useragent.override` and value `test`).
-It's still mostly functional with unmodified user-agent string; however, uploading stock data will not work, as it involves sending a POST request.
-If you're using [Privacy Badger](https://www.eff.org/privacybadger), you'll need to open a new session with Privacy Badger completely disabled; simply disabling it for the demo website is not enough, as it still blocks session cookies from being sent to API.
+The demo is tested and is fully functional in Chrome, Firefox and Edge.
+If you've blocked third-party cookies in Chrome, you'll need to allow them for your `https://yourfunctionapp.azurewebsites.net` (otherwise, API requests won't be able to use your Azure auth cookie).
 
 To use: enter the base app url (e.g. `https://yourfunctionapp.azurewebsites.net`), log in, play!
 
