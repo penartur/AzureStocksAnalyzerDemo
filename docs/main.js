@@ -4,7 +4,6 @@ $(() => {
     const knownElements = {
         getApiBaseUrl: () => $("#apiBaseUrl"),
         getLoginButton: () => $("#loginButton"),
-        getLogoutButton: () => $("#logoutButton"),
         getCsvFile: () => $("#csvFile"),
         getCsvStockName: () => $("#csvStockName"),
         getUploadButton: () => $("#uploadButton"),
@@ -16,12 +15,11 @@ $(() => {
         getResultPlaceholder: () => $("#resultPlaceholder")
     };
 
-    const getApiUrl = () => knownElements.getApiBaseUrl().val();
+    const getApiUrl = () => knownElements.getApiBaseUrl().text();
 
     const getFile = () => knownElements.getCsvFile().prop("files")[0];
 
     const login = () => document.location = `${getApiUrl()}/.auth/login/aad?post_login_redirect_url=${encodeURIComponent(document.location)}`;
-    const logout = () => document.location = `${getApiUrl()}/.auth/logout?post_logout_redirect_url=${encodeURIComponent(document.location)}`;
 
     const onAjaxError = (jqXhr, textStatus, errorThrown) => alert(`An error occured: ${textStatus}, ${errorThrown}`);
 
@@ -42,6 +40,11 @@ $(() => {
     });
 
     const loadStatistics = () => {
+        if (!knownElements.getStockSelect().val()) {
+            alert("You should select a stock first");
+            return;
+        }
+
         knownElements.getResultPlaceholder().text("");
         $.ajax(`${getApiUrl()}/api/GetStockStatistics/${knownElements.getStockSelect().val()}/${knownElements.getStatisticsTypeSelect().val()}`, {
             data: {
@@ -78,16 +81,31 @@ $(() => {
         reader.readAsArrayBuffer(getFile());
     };
 
-    const rawHash = document.location.hash || "";
-    const hash = rawHash.startsWith("#") ? rawHash.substr(1) : rawHash;
-    knownElements.getApiBaseUrl().val(hash);
+    const init = () => {
+        const rawHash = document.location.hash || "";
+        const hash = rawHash.startsWith("#") ? rawHash.substr(1) : rawHash;
+        if (hash) {
+            knownElements.getApiBaseUrl().text(hash);
+        } else {
+            const apiUrl = window.prompt("Enter the API url", "https://yourfunctionapp.azurewebsites.net");
+            if (!apiUrl) {
+                $("*").hide();
+                return;
+            }
 
-    //if (getApiUrl()) updateStocksList();
+            knownElements.getApiBaseUrl().text(apiUrl);
+            document.location.hash = "#" + apiUrl;
+        }
+
+        if (document.referrer.indexOf("login") >= 0) {
+            updateStocksList();
+        }
+    };
 
     knownElements.getLoginButton().click(login);
-    knownElements.getLogoutButton().click(logout);
     knownElements.getCsvFile().change(onFileSelected);
     knownElements.getUploadButton().click(uploadFile);
     knownElements.getStockSelectUpdate().click(updateStocksList);
     knownElements.getStatisticsButton().click(loadStatistics);
+    init();
 });
